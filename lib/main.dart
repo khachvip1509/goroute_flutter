@@ -14,16 +14,26 @@ final GoRouter _router = GoRouter(
       },
       routes: <RouteBase>[
         GoRoute(
-          path: 'details',
-          name: 'details',
-          builder: (BuildContext context, GoRouterState state) {
-            return DetailsScreen(
-              key0: state.extra as PersonModel,
-              key1: state.queryParameters["key1"] ?? "",
-              key2: state.queryParameters["key2"] ?? "",
-            );
-          },
-        ),
+            path: 'details',
+            name: 'details',
+            builder: (BuildContext context, GoRouterState state) {
+              return DetailsScreen(
+                key0: state.extra as PersonModel,
+                key1: state.queryParameters["key1"] ?? "",
+                key2: state.queryParameters["key2"] ?? "",
+              );
+            },
+            routes: <RouteBase>[
+              GoRoute(
+                path: 'details2',
+                name: 'details2',
+                builder: (BuildContext context, GoRouterState state) {
+                  return DetailsScreen2(
+                    key0: state.extra as PersonModel,
+                  );
+                },
+              ),
+            ]),
       ],
     ),
   ],
@@ -54,7 +64,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () => context.goNamed('details',
-              extra: PersonModel(name: "Ken", age: 33, addr: "Hà Nội"),
+              extra: PersonModel(namename: "Ken", age: 33, addr: "Hà Nội"),
               queryParameters: {"key1": "KAKAKAK", "key2": "kaka2"}),
           child: const Text('Go to the Details screen'),
         ),
@@ -79,11 +89,44 @@ class DetailsScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Details Screen')),
       body: Column(
         children: [
-          Text(key0.name ?? ""),
+          Text(key0.namename ?? ""),
           Text(key0.age.toString() ?? "0"),
           Text(key0.addr ?? ""),
           Text(key1),
           Text(key2),
+          Center(
+            child: ElevatedButton(
+              onPressed: () => context.go('/'),
+              child: const Text('Go back to the Home screen'),
+            ),
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () => context.goNamed('details2', extra: key0),
+              child: const Text('Go to the Detail2 screen'),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/// The details screen
+class DetailsScreen2 extends StatelessWidget {
+  final PersonModel key0;
+
+  /// Constructs a [DetailsScreen]
+  const DetailsScreen2({super.key, required this.key0});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Details Screen')),
+      body: Column(
+        children: [
+          Text('Detail2'),
+          Text(key0.namename ?? ""),
           Center(
             child: ElevatedButton(
               onPressed: () => context.go('/'),

@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 class PersonModel {
-  String? name;
+  String? namename;
   int? age;
   String? addr;
 
-  PersonModel({this.name, this.age, this.addr});
+  PersonModel({this.namename, this.age, this.addr});
 
   PersonModel.fromJson(Map<String, dynamic> json) {
-    name = json['name'] ?? "";
+    namename = json['name'] ?? "";
     age = json['age'] ?? 0;
     addr = json['addr'] ?? "";
   }
