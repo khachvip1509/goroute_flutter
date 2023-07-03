@@ -2,6 +2,9 @@ import 'package:bloc_flutter/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'detail.dart';
+import 'detail2.dart';
+
 void main() => runApp(const MyApp());
 
 /// The route configuration.
@@ -10,7 +13,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const HomeScreen();
+        return HomeScreen();
       },
       routes: <RouteBase>[
         GoRoute(
@@ -18,9 +21,7 @@ final GoRouter _router = GoRouter(
             name: 'details',
             builder: (BuildContext context, GoRouterState state) {
               return DetailsScreen(
-                key0: state.extra as PersonModel,
-                key1: state.queryParameters["key1"] ?? "",
-                key2: state.queryParameters["key2"] ?? "",
+                lsPerson: state.extra as List<PersonModel>,
               );
             },
             routes: <RouteBase>[
@@ -29,7 +30,7 @@ final GoRouter _router = GoRouter(
                 name: 'details2',
                 builder: (BuildContext context, GoRouterState state) {
                   return DetailsScreen2(
-                    key0: state.extra as PersonModel,
+                    lsPerson: state.extra as List<PersonModel>,
                   );
                 },
               ),
@@ -55,85 +56,25 @@ class MyApp extends StatelessWidget {
 /// The home screen
 class HomeScreen extends StatelessWidget {
   /// Constructs a [HomeScreen]
-  const HomeScreen({super.key});
-
+  HomeScreen({super.key});
+  List<PersonModel> LsPerson = [
+    PersonModel(namename: "ghi", age: 33, addr: "Hà Nội1"),
+    PersonModel(namename: "def", age: 34, addr: "Hà Nội2"),
+    PersonModel(namename: "abc", age: 35, addr: "Hà Nội3"),
+    PersonModel(namename: "jlm", age: 36, addr: "Hà Nội4"),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Home Screen')),
       body: Center(
         child: ElevatedButton(
-          onPressed: () => context.goNamed('details',
-              extra: PersonModel(namename: "Ken", age: 33, addr: "Hà Nội"),
-              queryParameters: {"key1": "KAKAKAK", "key2": "kaka2"}),
-          child: const Text('Go to the Details screen'),
-        ),
-      ),
-    );
-  }
-}
-
-/// The details screen
-class DetailsScreen extends StatelessWidget {
-  final PersonModel key0;
-  final String key1;
-  final String key2;
-
-  /// Constructs a [DetailsScreen]
-  const DetailsScreen(
-      {super.key, required this.key0, required this.key1, required this.key2});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Details Screen')),
-      body: Column(
-        children: [
-          Text(key0.namename ?? ""),
-          Text(key0.age.toString() ?? "0"),
-          Text(key0.addr ?? ""),
-          Text(key1),
-          Text(key2),
-          Center(
-            child: ElevatedButton(
-              onPressed: () => context.go('/'),
-              child: const Text('Go back to the Home screen'),
-            ),
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () => context.goNamed('details2', extra: key0),
-              child: const Text('Go to the Detail2 screen'),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-/// The details screen
-class DetailsScreen2 extends StatelessWidget {
-  final PersonModel key0;
-
-  /// Constructs a [DetailsScreen]
-  const DetailsScreen2({super.key, required this.key0});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Details Screen')),
-      body: Column(
-        children: [
-          Text('Detail2'),
-          Text(key0.namename ?? ""),
-          Center(
-            child: ElevatedButton(
-              onPressed: () => context.go('/'),
-              child: const Text('Go back to the Home screen'),
-            ),
-          )
-        ],
+            onPressed: () {
+              return context.goNamed('details',
+                  extra: LsPerson,
+                  queryParameters: {"key1": "KAKAKAK", "key2": "kaka2"});
+            },
+            child: const Text('Go to the Details screen')),
       ),
     );
   }
